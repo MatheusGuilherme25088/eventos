@@ -1,143 +1,63 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | Eventos Climáticos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+    <title>Eventos Climáticos - Home</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M9 22a6 6 0 0 1 .7-12 8 8 0 0 1 15.3 2.5A5 5 0 0 1 24 22z' fill='%231F3B4D'/><path d='M17 18l-3 6h3l-2 6 6-8h-3l2-4z' fill='%23E0A100'/></svg>">
-    <script src="js/api.js"></script>
-    <script>
-        // Protege a página: sem usuário logado, volta para o login
-        if (!obterUsuario()) window.location.replace('index.html');
-    </script>
 </head>
 <body>
 
-    <!-- [RF002] Tela Home -->
-    <header class="topo">
-        <div class="topo-conteudo">
-            <h1 class="marca">
-                <svg viewBox="0 0 32 32" aria-hidden="true">
-                    <path d="M9 22a6 6 0 0 1 .7-12 8 8 0 0 1 15.3 2.5A5 5 0 0 1 24 22z" fill="#FFFFFF"/>
-                    <path d="M17 18l-3 6h3l-2 6 6-8h-3l2-4z" fill="#E0A100"/>
-                </svg>
-                Eventos Climáticos
-            </h1>
+    <!-- RF002 - Tela Home -->
+    <header>
+        <h2>Eventos Climáticos</h2>
 
-            <button type="button" class="btn-novo" id="btnNovo" title="Registrar evento" aria-label="Registrar evento">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-            </button>
-
-            <!-- [RF002.1] Nome do usuário logado -->
-            <span class="usuario-logado" id="nomeUsuario"></span>
-
-            <!-- [RF002.2] Botão Sair -->
-            <button type="button" class="btn btn-sair" id="btnSair">Sair</button>
+        <div class="usuario">
+            <button id="btnNovo" class="btn-novo" title="Novo evento">+</button>
+            <!-- RF002.1 nome do usuario logado -->
+            <span id="nomeUsuario"></span>
+            <!-- RF002.2 botao sair -->
+            <button id="btnSair" class="btn-sair">Sair</button>
         </div>
     </header>
 
-    <main class="conteudo">
-        <div class="barra">
-            <h2>Eventos registrados <small id="contagem"></small></h2>
-
-            <div class="alternador" role="group" aria-label="Quais eventos mostrar">
-                <button type="button" data-filtro="todos" aria-pressed="true">Todos</button>
-                <button type="button" data-filtro="meus" aria-pressed="false">Meus</button>
-            </div>
-
-            <div class="busca">
-                <label for="busca" class="sr-only">Buscar por cidade ou tipo</label>
-                <input type="search" id="busca" placeholder="Buscar cidade ou tipo">
-            </div>
-        </div>
-
-        <ul class="resumo" id="resumo" aria-label="Filtrar por tipo de evento"></ul>
-
-        <!-- [RF002.3] CRUD de eventos: lista (R) -->
-        <ul class="lista" id="lista" aria-live="polite"></ul>
+    <main>
+        <!-- RF002.3 lista de eventos -->
+        <ul id="lista"></ul>
     </main>
 
-    <!-- [RF002.3] CRUD: formulário de cadastro (C) e edição (U) -->
-    <dialog id="dialogoEvento" aria-labelledby="tituloDialogo">
-        <form id="formEvento" novalidate>
-            <div class="dialogo-topo">
-                <h2 id="tituloDialogo">Registrar evento</h2>
-                <button type="button" class="btn-icone" data-fechar aria-label="Fechar">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-                </button>
-            </div>
+    <!-- Modal de cadastro / edicao -->
+    <div id="modal" class="modal">
+        <div class="modal-conteudo">
+            <h3 id="tituloModal">Novo evento</h3>
 
-            <div class="dialogo-corpo">
-                <div class="linha-dupla">
-                    <div class="campo">
-                        <label for="cidade">Cidade</label>
-                        <input type="text" id="cidade" name="cidade" maxlength="50" required placeholder="Ex.: Campinas">
-                    </div>
-                    <div class="campo">
-                        <label for="tipoEvento">Tipo de evento</label>
-                        <input type="text" id="tipoEvento" name="tipoEvento" maxlength="50" required list="tiposSugeridos" placeholder="Ex.: Tempestade">
-                        <datalist id="tiposSugeridos">
-                            <option value="Tempestade">
-                            <option value="Tempestade Magnética">
-                            <option value="Vendaval">
-                            <option value="Queimada">
-                            <option value="Geada">
-                            <option value="Granizo">
-                            <option value="Enchente">
-                            <option value="Onda de calor">
-                            <option value="Baixa umidade relativa do ar">
-                        </datalist>
-                    </div>
+            <form id="formEvento">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" maxlength="50">
+
+                <label for="tipoEvento">Tipo do evento</label>
+                <input type="text" id="tipoEvento" maxlength="50" placeholder="Ex: Tempestade, Geada...">
+
+                <label for="temperaturaMaxima">Temperatura máxima (°C)</label>
+                <input type="number" id="temperaturaMaxima" step="0.1">
+
+                <label for="data">Data</label>
+                <input type="date" id="data">
+
+                <label for="nivelImpacto">Nível de impacto</label>
+                <textarea id="nivelImpacto" maxlength="100" rows="3"></textarea>
+
+                <p id="erroEvento" class="erro"></p>
+
+                <div class="botoes">
+                    <button type="button" id="btnCancelar" class="btn-cancelar">Cancelar</button>
+                    <button type="submit" id="btnSalvar">Salvar</button>
                 </div>
-
-                <div class="linha-dupla">
-                    <div class="campo">
-                        <label for="temperaturaMaxima">Temperatura máxima (°C)</label>
-                        <input type="number" id="temperaturaMaxima" name="temperaturaMaxima" step="0.1" min="-30" max="60" placeholder="Opcional">
-                    </div>
-                    <div class="campo">
-                        <label for="data">Data e hora</label>
-                        <input type="datetime-local" id="data" name="data" required>
-                    </div>
-                </div>
-
-                <div class="campo">
-                    <label for="nivelImpacto">Nível de impacto</label>
-                    <textarea id="nivelImpacto" name="nivelImpacto" maxlength="100" required placeholder="Ex.: Derrubada de árvores e destelhamento de edifícios"></textarea>
-                    <span class="dica" id="contadorImpacto">0 de 100 caracteres</span>
-                </div>
-
-                <p class="mensagem-erro" id="erroEvento" role="alert"></p>
-            </div>
-
-            <div class="dialogo-rodape">
-                <button type="button" class="btn btn-contorno" data-fechar>Cancelar</button>
-                <button type="submit" class="btn btn-primario" id="btnSalvar">Registrar evento</button>
-            </div>
-        </form>
-    </dialog>
-
-    <!-- [RF002.3] CRUD: confirmação de exclusão (D) -->
-    <dialog id="dialogoExcluir" class="dialogo-confirmar" aria-labelledby="tituloExcluir">
-        <div class="dialogo-topo">
-            <h2 id="tituloExcluir">Excluir evento</h2>
+            </form>
         </div>
-        <div class="dialogo-corpo">
-            <p id="textoExcluir"></p>
-            <p class="mensagem-erro" id="erroExcluir" role="alert"></p>
-        </div>
-        <div class="dialogo-rodape">
-            <button type="button" class="btn btn-contorno" data-fechar>Cancelar</button>
-            <button type="button" class="btn btn-perigo" id="btnConfirmarExcluir">Excluir</button>
-        </div>
-    </dialog>
+    </div>
 
-    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
-
+    <script src="js/api.js"></script>
     <script src="js/home.js"></script>
 </body>
 </html>

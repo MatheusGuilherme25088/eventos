@@ -22,11 +22,9 @@ Wireframes:
 |---|---|
 | ![Tela de login](docs/tela-login.png) | ![Tela Home](docs/tela-home.png) |
 
-| Cadastro / edição | Exclusão | Celular |
-|---|---|---|
-| ![Cadastro](docs/tela-cadastro.png) | ![Exclusão](docs/tela-excluir.png) | ![Celular](docs/tela-home-celular.png) |
-
-Na Home, a faixa colorida à esquerda de cada evento mostra a **temperatura máxima**: azul para frio, âmbar para calor moderado e vermelho para calor extremo.
+| Cadastro / edição | Celular |
+|---|---|
+| ![Cadastro](docs/tela-cadastro.png) | ![Celular](docs/tela-home-celular.png) |
 
 ## Requisitos funcionais
 
@@ -39,7 +37,7 @@ Na Home, a faixa colorida à esquerda de cada evento mostra a **temperatura máx
 | RF002.2 | Botão "Sair" no header da Home | ✅ |
 | RF002.3 | CRUD de eventos climáticos | ✅ cadastrar, listar, editar e excluir |
 
-Extras: filtro "Todos / Meus", busca por cidade ou tipo, contagem por tipo de evento (clicável como filtro), rota `/evento/resumo`, proteção da Home sem login, layout responsivo.
+Extras: rota `/evento/resumo`, Home bloqueada sem login e layout que funciona no celular.
 
 ## Tecnologias
 

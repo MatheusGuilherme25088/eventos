@@ -1,63 +1,42 @@
-// ==========================================================
-// Configuração e funções compartilhadas entre as telas
-// ==========================================================
-
-// Endereço do back-end (pasta /api). Altere se mudar a porta no .env
+// endereço da API (back-end)
 const API_URL = 'http://localhost:3000';
 
-// Chave onde guardamos o usuário logado no navegador
-const CHAVE_SESSAO = 'eventos.usuario';
+// faz a requisição e devolve o json, se der erro lança a mensagem da API
+async function api(rota, metodo = 'GET', corpo = null) {
+    const opcoes = { method: metodo, headers: { 'Content-Type': 'application/json' } };
+    if (corpo) opcoes.body = JSON.stringify(corpo);
 
-/**
- * Faz uma requisição à API e devolve o JSON da resposta.
- * Se a API responder com erro, lança um Error com a mensagem do back-end.
- */
-async function api(caminho, { method = 'GET', body } = {}) {
     let resposta;
     try {
-        resposta = await fetch(API_URL + caminho, {
-            method,
-            headers: body ? { 'Content-Type': 'application/json' } : undefined,
-            body: body ? JSON.stringify(body) : undefined
-        });
-    } catch {
-        throw new Error(`Não foi possível conectar à API em ${API_URL}. Verifique se o back-end está rodando (npm run dev na pasta api).`);
+        resposta = await fetch(API_URL + rota, opcoes);
+    } catch (e) {
+        throw new Error('Não foi possível conectar na API. Ela está rodando?');
     }
 
-    let dados = null;
-    try { dados = await resposta.json(); } catch { /* resposta sem corpo */ }
-
+    const dados = await resposta.json().catch(() => null);
     if (!resposta.ok) {
-        throw new Error((dados && dados.erro) || `Erro ${resposta.status} ao acessar a API.`);
+        throw new Error(dados && dados.erro ? dados.erro : 'Erro ' + resposta.status);
     }
     return dados;
 }
 
-// ---------- Sessão ----------
+// usuario logado fica salvo no localStorage
 function obterUsuario() {
-    try {
-        return JSON.parse(localStorage.getItem(CHAVE_SESSAO));
-    } catch {
-        return null;
-    }
+    return JSON.parse(localStorage.getItem('usuario'));
 }
 
 function salvarUsuario(usuario) {
-    localStorage.setItem(CHAVE_SESSAO, JSON.stringify(usuario));
+    localStorage.setItem('usuario', JSON.stringify(usuario));
 }
 
 function sair() {
-    localStorage.removeItem(CHAVE_SESSAO);
+    localStorage.removeItem('usuario');
     window.location.href = 'index.html';
 }
 
-// ---------- Utilidades ----------
-// Evita que textos digitados pelo usuário virem HTML (proteção contra XSS)
-function escaparHtml(texto) {
-    return String(texto ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+// evita que o texto vire html na hora de mostrar na tela
+function escapar(texto) {
+    const div = document.createElement('div');
+    div.innerText = texto ?? '';
+    return div.innerHTML;
 }

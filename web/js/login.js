@@ -1,63 +1,28 @@
-// ==========================================================
-// [RF001] Tela de login
-// ==========================================================
-
-// Se já existe alguém logado, vai direto para a Home
+// se ja estiver logado vai direto pra home
 if (obterUsuario()) {
     window.location.href = 'home.html';
 }
 
 const formLogin = document.getElementById('formLogin');
-const campoEmail = document.getElementById('email');
-const campoSenha = document.getElementById('senha');
 const erroLogin = document.getElementById('erroLogin');
-const btnEntrar = document.getElementById('btnEntrar');
-
-function mostrarErro(mensagem, campo) {
-    erroLogin.textContent = mensagem;
-    campoEmail.removeAttribute('aria-invalid');
-    campoSenha.removeAttribute('aria-invalid');
-    if (campo) {
-        campo.setAttribute('aria-invalid', 'true');
-        campo.focus();
-    }
-}
 
 formLogin.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = campoEmail.value.trim();
-    const senha = campoSenha.value;
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
 
-    if (!email) return mostrarErro('Informe o seu e-mail.', campoEmail);
-    if (!senha) return mostrarErro('Informe a sua senha.', campoSenha);
-
-    mostrarErro('');
-    btnEntrar.disabled = true;
-    btnEntrar.textContent = 'Entrando...';
+    if (email == '' || senha == '') {
+        erroLogin.innerText = 'Preencha o e-mail e a senha.';
+        return;
+    }
 
     try {
-        // [RF001.1] POST /usuario/login -> devolve os dados do usuário
-        const usuario = await api('/usuario/login', {
-            method: 'POST',
-            body: { email, senha }
-        });
+        // RF001.1 - POST /usuario/login
+        const usuario = await api('/usuario/login', 'POST', { email, senha });
         salvarUsuario(usuario);
         window.location.href = 'home.html';
     } catch (erro) {
-        mostrarErro(erro.message, campoSenha);
-        campoSenha.select();
-    } finally {
-        btnEntrar.disabled = false;
-        btnEntrar.textContent = 'Entrar';
+        erroLogin.innerText = erro.message;
     }
-});
-
-// Preenche rapidamente com uma conta de teste
-document.querySelectorAll('.contas-teste [data-email]').forEach(botao => {
-    botao.addEventListener('click', () => {
-        campoEmail.value = botao.dataset.email;
-        campoSenha.value = 'senha123';
-        btnEntrar.focus();
-    });
 });
