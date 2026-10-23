@@ -48,8 +48,8 @@ function mostrarEventos() {
                 <small>${temp} &nbsp;|&nbsp; ${data} &nbsp;|&nbsp; por ${escapar(ev.usuario ? ev.usuario.nome : '')}</small>
             </div>
             <div class="acoes">
-                <button class="btn-editar" title="Editar">✏️</button>
-                <button class="btn-excluir" title="Excluir">🗑️</button>
+                <button class="btn-editar">Editar</button>
+                <button class="btn-excluir">Excluir</button>
             </div>
         `;
 

@@ -184,12 +184,23 @@ main {
     background-color: #0e0e0e;
     border: 1px solid #3a3a3a;
     border-radius: 5px;
-    padding: 8px 10px;
-    font-size: 17px;
+    padding: 7px 14px;
+    font-size: 14px;
+    color: #e2e2e2;
 }
 
 .acoes button:hover {
     border-color: #6b6b6b;
+}
+
+.acoes .btn-excluir {
+    color: #ff8a8a;
+    border-color: #a33a3a;
+}
+
+.acoes .btn-excluir:hover {
+    background-color: #a33a3a;
+    color: white;
 }
 
 .aviso {
