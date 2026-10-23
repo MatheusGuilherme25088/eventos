@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar | Eventos Climáticos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M9 22a6 6 0 0 1 .7-12 8 8 0 0 1 15.3 2.5A5 5 0 0 1 24 22z' fill='%231F3B4D'/><path d='M17 18l-3 6h3l-2 6 6-8h-3l2-4z' fill='%23E0A100'/></svg>">
+</head>
+<body class="pagina-login">
+
+    <!-- [RF001] Tela de login -->
+    <main class="painel-login">
+        <h1 class="marca">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+                <path d="M9 22a6 6 0 0 1 .7-12 8 8 0 0 1 15.3 2.5A5 5 0 0 1 24 22z" fill="#1F3B4D"/>
+                <path d="M17 18l-3 6h3l-2 6 6-8h-3l2-4z" fill="#E0A100"/>
+            </svg>
+            Eventos Climáticos
+        </h1>
+        <p class="subtitulo">Entre para registrar e acompanhar eventos extremos na sua região.</p>
+
+        <form id="formLogin" class="form-login" novalidate>
+            <div class="campo">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" autocomplete="username" placeholder="voce@email.com" required>
+            </div>
+            <div class="campo">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" autocomplete="current-password" placeholder="Sua senha" required>
+            </div>
+
+            <p id="erroLogin" class="mensagem-erro" role="alert"></p>
+
+            <button type="submit" class="btn btn-primario" id="btnEntrar">Entrar</button>
+        </form>
+
+        <details class="contas-teste">
+            <summary>Contas de teste do seed</summary>
+            <ul>
+                <li><button type="button" data-email="ana@email.com">ana@email.com</button></li>
+                <li><button type="button" data-email="maria@email.com">maria@email.com</button></li>
+                <li><button type="button" data-email="joao@email.com">joao@email.com</button></li>
+            </ul>
+            <p>Senha de todas: senha123</p>
+        </details>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>
