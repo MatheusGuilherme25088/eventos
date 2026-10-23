@@ -15,10 +15,8 @@ app.use('/usuario', usuarioRoutes);
 app.use('/', (req, res) => {
   res.json({
     msg: 'API eventos respondendo:', rotas: [
-      { login: 'POST /usuario/login' },
       { usuario: '/usuario' },
-      { eventos: '/evento' },
-      { resumo: '/evento/resumo' }
+      { eventos: '/evento' }
     ]
   })
 })

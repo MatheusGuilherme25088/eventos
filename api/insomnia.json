@@ -1,0 +1,220 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-23T18:05:31.761Z",
+  "__export_source": "backend-aula",
+  "resources": [
+    {
+      "_id": "wrk_backend",
+      "_type": "workspace",
+      "name": "Backend Aula"
+    },
+    {
+      "_id": "fld_api",
+      "_type": "request_group",
+      "parentId": "wrk_backend",
+      "name": "api"
+    },
+    {
+      "_id": "fld_Usuario",
+      "_type": "request_group",
+      "parentId": "fld_api",
+      "name": "Usuario"
+    },
+    {
+      "_id": "req_Usuario_GET_ALL",
+      "_type": "request",
+      "parentId": "fld_Usuario",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Listar",
+      "method": "GET",
+      "url": "http://localhost:3000/usuario/listar"
+    },
+    {
+      "_id": "req_Usuario_GET_ID",
+      "_type": "request",
+      "parentId": "fld_Usuario",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Buscar",
+      "method": "GET",
+      "url": "http://localhost:3000/usuario/buscar/:id"
+    },
+    {
+      "_id": "req_Usuario_POST",
+      "_type": "request",
+      "parentId": "fld_Usuario",
+      "name": "Cadastrar",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "method": "POST",
+      "url": "http://localhost:3000/usuario/cadastrar",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"string\",\n  \"email\": \"string\",\n  \"senha\": \"string\"\n}"
+      }
+    },
+    {
+      "_id": "req_Usuario_PUT",
+      "_type": "request",
+      "parentId": "fld_Usuario",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Atualizar",
+      "method": "PUT",
+      "url": "http://localhost:3000/usuario/atualizar/:id",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"string\",\n  \"email\": \"string\",\n  \"senha\": \"string\"\n}"
+      }
+    },
+    {
+      "_id": "req_Usuario_DELETE",
+      "_type": "request",
+      "parentId": "fld_Usuario",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Excluir",
+      "method": "DELETE",
+      "url": "http://localhost:3000/usuario/excluir/:id"
+    },
+    {
+      "_id": "fld_Evento",
+      "_type": "request_group",
+      "parentId": "fld_api",
+      "name": "Evento"
+    },
+    {
+      "_id": "req_Evento_GET_ALL",
+      "_type": "request",
+      "parentId": "fld_Evento",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Listar",
+      "method": "GET",
+      "url": "http://localhost:3000/evento/listar"
+    },
+    {
+      "_id": "req_Evento_GET_ID",
+      "_type": "request",
+      "parentId": "fld_Evento",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Buscar",
+      "method": "GET",
+      "url": "http://localhost:3000/evento/buscar/:id"
+    },
+    {
+      "_id": "req_Evento_POST",
+      "_type": "request",
+      "parentId": "fld_Evento",
+      "name": "Cadastrar",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "method": "POST",
+      "url": "http://localhost:3000/evento/cadastrar",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"usuarioId\": 0,\n  \"cidade\": \"string\",\n  \"tipoEvento\": \"string\",\n  \"temperaturaMaxima\": 0,\n  \"data\": \"2026-10-23T18:05:31.759Z\",\n  \"nivelImpacto\": \"string\"\n}"
+      }
+    },
+    {
+      "_id": "req_Evento_PUT",
+      "_type": "request",
+      "parentId": "fld_Evento",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Atualizar",
+      "method": "PUT",
+      "url": "http://localhost:3000/evento/atualizar/:id",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"usuarioId\": 0,\n  \"cidade\": \"string\",\n  \"tipoEvento\": \"string\",\n  \"temperaturaMaxima\": 0,\n  \"data\": \"2026-10-23T18:05:31.759Z\",\n  \"nivelImpacto\": \"string\"\n}"
+      }
+    },
+    {
+      "_id": "req_Evento_DELETE",
+      "_type": "request",
+      "parentId": "fld_Evento",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Excluir",
+      "method": "DELETE",
+      "url": "http://localhost:3000/evento/excluir/:id"
+    },
+    {
+      "_id": "req_Usuario_POST_Login",
+      "_type": "request",
+      "parentId": "fld_Usuario",
+      "name": "Login",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "method": "POST",
+      "url": "http://localhost:3000/usuario/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"ana@email.com\",\n  \"senha\": \"senha123\"\n}"
+      }
+    },
+    {
+      "_id": "req_Evento_GET_ALL_Resumo",
+      "_type": "request",
+      "parentId": "fld_Evento",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "name": "Resumo",
+      "method": "GET",
+      "url": "http://localhost:3000/evento/resumo",
+      "body": {}
+    }
+  ]
+}

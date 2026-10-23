@@ -20,7 +20,7 @@ let idEditando = null; // null = cadastrando, numero = editando
 // ---------- LISTAR ----------
 async function carregarEventos() {
     try {
-        eventos = await api('/evento');
+        eventos = await api('/evento/listar');
         mostrarEventos();
     } catch (erro) {
         lista.innerHTML = `<p class="aviso">${escapar(erro.message)}</p>`;
@@ -119,10 +119,10 @@ formEvento.addEventListener('submit', async (e) => {
 
     try {
         if (idEditando) {
-            await api('/evento/' + idEditando, 'PUT', evento);
+            await api('/evento/atualizar/' + idEditando, 'PUT', evento);
         } else {
             evento.usuarioId = usuario.id;
-            await api('/evento', 'POST', evento);
+            await api('/evento/cadastrar', 'POST', evento);
         }
         fecharModal();
         carregarEventos();
@@ -136,7 +136,7 @@ async function excluirEvento(ev) {
     if (!confirm(`Deseja excluir o evento "${ev.cidade}, ${ev.tipoEvento}"?`)) return;
 
     try {
-        await api('/evento/' + ev.id, 'DELETE');
+        await api('/evento/excluir/' + ev.id, 'DELETE');
         carregarEventos();
     } catch (erro) {
         alert(erro.message);

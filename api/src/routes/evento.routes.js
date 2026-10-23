@@ -1,16 +1,20 @@
-const express = require('express');
+const express = require("express");
+
 const router = express.Router();
 
-const Evento = require('../controllers/evento.controller');
+const {
+    cadastrar,
+    listar,
+    buscar,
+    atualizar,
+    excluir,
+    resumo } = require("../controllers/evento.controller");
 
-// /resumo precisa vir antes de /:id para não ser confundido com um id
-router.get('/resumo', Evento.resumo);
-
-router.post('/', Evento.cadastrar);
-router.get('/', Evento.listar);
-router.get('/:id', Evento.buscar);
-router.put('/:id', Evento.alterar);
-router.patch('/:id', Evento.alterar);
-router.delete('/:id', Evento.excluir);
+router.post("/cadastrar", cadastrar);
+router.get("/listar", listar);
+router.get("/buscar/:id", buscar);
+router.put("/atualizar/:id", atualizar);
+router.delete("/excluir/:id", excluir);
+router.get("/resumo", resumo);
 
 module.exports = router;

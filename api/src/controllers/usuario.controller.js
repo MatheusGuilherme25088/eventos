@@ -1,120 +1,103 @@
-const prisma = require('../data/prisma');
+const prisma = require("../data/prisma");
 
-// Nunca devolvemos a senha nas respostas da API
-const semSenha = { senha: true };
-
-function tratarErro(res, erro) {
-    if (erro.code === 'P2002') return res.status(409).json({ erro: 'Já existe um usuário com este e-mail.' });
-    if (erro.code === 'P2025') return res.status(404).json({ erro: 'Usuário não encontrado.' });
-    console.error(erro);
-    return res.status(500).json({ erro: 'Erro interno no servidor.' });
-}
-
-// [RF001.1] POST /usuario/login  { email, senha } -> dados do usuário (sem a senha)
+// RF001.1 - login: recebe email e senha e devolve os dados do usuario
 const login = async (req, res) => {
-    try {
-        const { email, senha } = req.body || {};
+    const { email, senha } = req.body;
 
-        if (!email || !senha) {
-            return res.status(400).json({ erro: 'Informe e-mail e senha.' });
-        }
-
-        const usuario = await prisma.usuario.findUnique({
-            where: { email: String(email).trim().toLowerCase() }
-        });
-
-        if (!usuario || usuario.senha !== senha) {
-            return res.status(401).json({ erro: 'E-mail ou senha inválidos.' });
-        }
-
-        const { senha: _, ...dados } = usuario;
-        return res.status(200).json(dados);
-    } catch (erro) {
-        return tratarErro(res, erro);
+    if (!email || !senha) {
+        return res.status(400).json({ erro: "Informe o e-mail e a senha." });
     }
+
+    const usuario = await prisma.usuario.findUnique({
+        where: { email: email }
+    });
+
+    if (!usuario || usuario.senha != senha) {
+        return res.status(401).json({ erro: "E-mail ou senha inválidos." });
+    }
+
+    // nao devolve a senha
+    delete usuario.senha;
+    res.status(200).json(usuario);
 };
 
 const cadastrar = async (req, res) => {
+    const data = req.body;
+
     try {
-        const { nome, email, senha } = req.body || {};
-
-        if (!nome || !email || !senha) {
-            return res.status(400).json({ erro: 'Campos obrigatórios: nome, email e senha.' });
-        }
-
-        const usuario = await prisma.usuario.create({
-            data: { nome, email: String(email).trim().toLowerCase(), senha },
-            omit: semSenha
+        const item = await prisma.usuario.create({
+            data,
+            omit: { senha: true }
         });
-        return res.status(201).json(usuario);
-    } catch (erro) {
-        return tratarErro(res, erro);
+        res.status(201).json(item);
+    } catch (e) {
+        res.status(400).json({ erro: "Não foi possível cadastrar o usuário." });
     }
 };
 
 const listar = async (req, res) => {
-    try {
-        const usuarios = await prisma.usuario.findMany({
-            omit: semSenha,
-            orderBy: { nome: 'asc' }
-        });
-        return res.status(200).json(usuarios);
-    } catch (erro) {
-        return tratarErro(res, erro);
-    }
+    const lista = await prisma.usuario.findMany({
+        omit: { senha: true }
+    });
+
+    res.status(200).json(lista);
 };
 
 const buscar = async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-        const usuario = await prisma.usuario.findUnique({
-            where: { id },
-            omit: semSenha,
-            include: { eventos: true }
-        });
+    const { id } = req.params;
 
-        if (!usuario) return res.status(404).json({ erro: 'Usuário não encontrado.' });
-        return res.status(200).json(usuario);
-    } catch (erro) {
-        return tratarErro(res, erro);
+    const item = await prisma.usuario.findUnique({
+        where: { id: Number(id) },
+        omit: { senha: true },
+        include: { eventos: true }
+    });
+
+    if (!item) {
+        return res.status(404).json({ erro: "Usuário não encontrado." });
+    }
+    res.status(200).json(item);
+};
+
+const atualizar = async (req, res) => {
+    const { id } = req.params;
+    const dados = req.body;
+
+    try {
+        const item = await prisma.usuario.update({
+            where: { id: Number(id) },
+            data: dados,
+            omit: { senha: true }
+        });
+        res.status(200).json(item);
+    } catch (e) {
+        res.status(400).json({ erro: "Não foi possível atualizar o usuário." });
     }
 };
 
-const alterar = async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-        const { nome, email, senha } = req.body || {};
-
-        const data = {};
-        if (nome !== undefined) data.nome = nome;
-        if (email !== undefined) data.email = String(email).trim().toLowerCase();
-        if (senha !== undefined) data.senha = senha;
-
-        const usuario = await prisma.usuario.update({
-            where: { id },
-            data,
-            omit: semSenha
-        });
-        return res.status(200).json(usuario);
-    } catch (erro) {
-        return tratarErro(res, erro);
-    }
-};
-
-// Exclui o usuário e os eventos registrados por ele (em uma transação)
 const excluir = async (req, res) => {
-    try {
-        const id = Number(req.params.id);
+    const { id } = req.params;
 
-        const usuario = await prisma.$transaction(async (tx) => {
-            await tx.evento.deleteMany({ where: { usuarioId: id } });
-            return tx.usuario.delete({ where: { id }, omit: semSenha });
+    try {
+        // apaga os eventos do usuario antes, por causa da chave estrangeira
+        await prisma.evento.deleteMany({
+            where: { usuarioId: Number(id) }
         });
 
-        return res.status(200).json(usuario);
-    } catch (erro) {
-        return tratarErro(res, erro);
+        const item = await prisma.usuario.delete({
+            where: { id: Number(id) },
+            omit: { senha: true }
+        });
+        res.status(200).json(item);
+    } catch (e) {
+        res.status(404).json({ erro: "Usuário não encontrado." });
     }
 };
 
-module.exports = { login, cadastrar, listar, buscar, alterar, excluir };
+module.exports = {
+    login,
+    cadastrar,
+    listar,
+    buscar,
+    atualizar,
+    excluir
+}

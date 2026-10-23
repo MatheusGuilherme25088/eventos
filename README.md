@@ -60,6 +60,7 @@ eventos/
 │   │   ├── data/prisma.js       # PrismaClient + adapter MariaDB
 │   │   └── routes/              # usuario.routes.js, evento.routes.js
 │   ├── .env                     # PORT e DATABASE_URL (não vai para o GitHub)
+│   ├── insomnia.json            # coleção de rotas para o Insomnia
 │   ├── prisma.config.ts         # schema, migrations, seed e datasource
 │   ├── package.json
 │   └── server.js
@@ -142,27 +143,29 @@ npx prisma db seed
 
 ## Endpoints da API
 
+As rotas seguem o padrão gerado pelo `npx backend-aula`. A coleção para testar no Insomnia está em `api/insomnia.json` (no Insomnia: **Import** e escolha o arquivo).
+
 ### Usuário
 
 | Método | Rota | Descrição |
 |---|---|---|
 | POST | `/usuario/login` | Login. Corpo: `{ "email", "senha" }`. Devolve o usuário sem a senha |
-| POST | `/usuario` | Cadastrar usuário |
-| GET | `/usuario` | Listar usuários |
-| GET | `/usuario/:id` | Buscar usuário com seus eventos |
-| PUT / PATCH | `/usuario/:id` | Alterar usuário |
-| DELETE | `/usuario/:id` | Excluir usuário (e os eventos dele) |
+| POST | `/usuario/cadastrar` | Cadastrar usuário |
+| GET | `/usuario/listar` | Listar usuários |
+| GET | `/usuario/buscar/:id` | Buscar usuário com seus eventos |
+| PUT | `/usuario/atualizar/:id` | Atualizar usuário |
+| DELETE | `/usuario/excluir/:id` | Excluir usuário (e os eventos dele) |
 
 ### Evento
 
 | Método | Rota | Descrição |
 |---|---|---|
-| POST | `/evento` | Cadastrar evento |
-| GET | `/evento` | Listar eventos (aceita `?usuarioId=1`) |
-| GET | `/evento/resumo` | Total e quantidade/temperatura média por tipo |
-| GET | `/evento/:id` | Buscar evento |
-| PUT / PATCH | `/evento/:id` | Alterar evento |
-| DELETE | `/evento/:id` | Excluir evento |
+| POST | `/evento/cadastrar` | Cadastrar evento |
+| GET | `/evento/listar` | Listar eventos (com o nome de quem registrou) |
+| GET | `/evento/buscar/:id` | Buscar evento |
+| PUT | `/evento/atualizar/:id` | Atualizar evento |
+| DELETE | `/evento/excluir/:id` | Excluir evento |
+| GET | `/evento/resumo` | Total de eventos e quantidade por tipo |
 
 Exemplo de login:
 
@@ -181,7 +184,7 @@ Resposta `200`:
 
 Com e-mail ou senha errados a resposta é `401` com `{ "erro": "E-mail ou senha inválidos." }`.
 
-Exemplo de cadastro de evento:
+Exemplo de cadastro de evento (`POST /evento/cadastrar`):
 
 ```json
 {
