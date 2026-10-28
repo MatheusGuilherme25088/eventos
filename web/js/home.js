@@ -3,10 +3,10 @@ const usuario = obterUsuario();
 // se nao tiver ninguem logado volta pro login
 if (!usuario) {
     window.location.href = 'index.html';
+} else {
+    // RF002.1 e RF002.2
+    document.getElementById('nomeUsuario').innerText = usuario.nome;
 }
-
-// RF002.1 e RF002.2
-document.getElementById('nomeUsuario').innerText = usuario.nome;
 document.getElementById('btnSair').addEventListener('click', sair);
 
 const lista = document.getElementById('lista');
@@ -143,4 +143,4 @@ async function excluirEvento(ev) {
     }
 }
 
-carregarEventos();
+if (usuario) carregarEventos();
