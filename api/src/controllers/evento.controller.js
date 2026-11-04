@@ -14,7 +14,6 @@ const cadastrar = async (req, res) => {
 };
 
 const listar = async (req, res) => {
-    // traz o nome de quem registrou o evento, para mostrar na tela
     const lista = await prisma.evento.findMany({
         include: { usuario: { select: { nome: true } } },
         orderBy: { id: "desc" }
@@ -64,7 +63,6 @@ const excluir = async (req, res) => {
     }
 };
 
-// resumo: quantidade de eventos por tipo
 const resumo = async (req, res) => {
     const grupos = await prisma.evento.groupBy({
         by: ["tipoEvento"],

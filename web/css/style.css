@@ -40,7 +40,6 @@ input:focus, textarea:focus {
     margin-bottom: 8px;
 }
 
-/* ---------- LOGIN ---------- */
 
 .pagina-login {
     display: flex;
@@ -84,7 +83,6 @@ input:focus, textarea:focus {
     background-color: #4f4f4f;
 }
 
-/* ---------- HOME ---------- */
 
 header {
     display: flex;
@@ -209,7 +207,6 @@ main {
     margin-top: 40px;
 }
 
-/* ---------- MODAL ---------- */
 
 .modal {
     display: none;
@@ -273,7 +270,6 @@ main {
     border: 1px solid #3a3a3a;
 }
 
-/* celular */
 @media (max-width: 600px) {
     header {
         padding: 12px 15px;

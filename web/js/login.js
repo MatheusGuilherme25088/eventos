@@ -1,4 +1,3 @@
-// se ja estiver logado vai direto pra home
 if (obterUsuario()) {
     window.location.href = 'home.html';
 }
@@ -18,7 +17,6 @@ formLogin.addEventListener('submit', async (e) => {
     }
 
     try {
-        // RF001.1 - POST /usuario/login
         const usuario = await api('/usuario/login', 'POST', { email, senha });
         salvarUsuario(usuario);
         window.location.href = 'home.html';

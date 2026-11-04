@@ -1,10 +1,8 @@
 const usuario = obterUsuario();
 
-// se nao tiver ninguem logado volta pro login
 if (!usuario) {
     window.location.href = 'index.html';
 } else {
-    // RF002.1 e RF002.2
     document.getElementById('nomeUsuario').innerText = usuario.nome;
 }
 document.getElementById('btnSair').addEventListener('click', sair);
@@ -15,9 +13,8 @@ const formEvento = document.getElementById('formEvento');
 const erroEvento = document.getElementById('erroEvento');
 
 let eventos = [];
-let idEditando = null; // null = cadastrando, numero = editando
+let idEditando = null;
 
-// ---------- LISTAR ----------
 async function carregarEventos() {
     try {
         eventos = await api('/evento/listar');
@@ -60,11 +57,9 @@ function mostrarEventos() {
     });
 }
 
-// ---------- CADASTRAR / EDITAR ----------
 document.getElementById('btnNovo').addEventListener('click', () => abrirModal());
 document.getElementById('btnCancelar').addEventListener('click', fecharModal);
 
-// deixa a data no formato do input (aaaa-mm-dd)
 function dataParaInput(d) {
     const mes = String(d.getMonth() + 1).padStart(2, '0');
     const dia = String(d.getDate()).padStart(2, '0');
@@ -109,7 +104,6 @@ formEvento.addEventListener('submit', async (e) => {
         temperaturaMaxima: temp == '' ? null : Number(temp),
         nivelImpacto: document.getElementById('nivelImpacto').value.trim()
     };
-    // meio dia pra data nao mudar de dia por causa do fuso
     if (data) evento.data = new Date(data + 'T12:00:00').toISOString();
 
     if (!evento.cidade || !evento.tipoEvento || !evento.nivelImpacto) {
@@ -131,7 +125,6 @@ formEvento.addEventListener('submit', async (e) => {
     }
 });
 
-// ---------- EXCLUIR ----------
 async function excluirEvento(ev) {
     if (!confirm(`Deseja excluir o evento "${ev.cidade}, ${ev.tipoEvento}"?`)) return;
 

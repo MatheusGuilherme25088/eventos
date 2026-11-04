@@ -13,16 +13,12 @@ async function main() {
             { nome: "Pedro Souza", email: "pedro@email.com", senha: "senha123" }
         ]
 
-        // Criação em sequência para manter a ordem (Ana, Maria, João, Paula, Pedro)
         const usuarios = []
         for (const data of dadosUsuarios) {
             usuarios.push(await transaction.usuario.create({ data }))
         }
         console.log("Usuarios de teste cadastrados.")
 
-        // O deleteMany() NÃO reinicia o auto incremento do MySQL.
-        // Por isso usamos o id real de cada usuário criado (usuarios[0].id, ...)
-        // em vez de 1, 2, 3... fixos. Assim o seed pode ser executado várias vezes.
         const [ana, maria, joao, paula, pedro] = usuarios
 
         const dadosEventos = [

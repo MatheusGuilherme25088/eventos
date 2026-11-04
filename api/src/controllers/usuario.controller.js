@@ -1,6 +1,5 @@
 const prisma = require("../data/prisma");
 
-// RF001.1 - login: recebe email e senha e devolve os dados do usuario
 const login = async (req, res) => {
     const { email, senha } = req.body;
 
@@ -16,7 +15,6 @@ const login = async (req, res) => {
         return res.status(401).json({ erro: "E-mail ou senha inválidos." });
     }
 
-    // nao devolve a senha
     delete usuario.senha;
     res.status(200).json(usuario);
 };
@@ -78,7 +76,6 @@ const excluir = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // apaga os eventos do usuario antes, por causa da chave estrangeira
         await prisma.evento.deleteMany({
             where: { usuarioId: Number(id) }
         });
